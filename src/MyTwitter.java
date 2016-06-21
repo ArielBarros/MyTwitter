@@ -1,6 +1,7 @@
 import java.util.Vector;
 
 import Persistence.IRepositorioUsuario;
+import Persistence.exception.PEException;
 import Profile.Perfil;
 import Profile.Tweet;
 
@@ -13,21 +14,27 @@ public class MyTwitter implements ITwitter{
 	}
 
 	@Override
-	public void criaPerfil(Perfil usuario) {
-		// TODO Auto-generated method stub
-		
+	public void criarPerfil(Perfil usuario) throws MyTwitterOperationException{
+		try {
+			this.repositorio.cadastrar(usuario);
+		} catch (PEException pee) {
+			throw new MyTwitterOperationException(pee);
+		}
 	}
 
 	@Override
 	public void cancelarPerfil(String usuario) {
-		// TODO Auto-generated method stub
-		
+		try {
+			//this.repositorio.
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	@Override
 	public void tweetar(String usuario, String mensagem) {
-		// TODO Auto-generated method stub
-		
+		//cercar com try catch
+		tweetar(usuario, mensagem);
 	}
 
 	@Override

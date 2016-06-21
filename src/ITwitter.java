@@ -3,7 +3,7 @@ import Profile.Perfil;
 import Profile.Tweet;
 
 public interface ITwitter {
-	public void criaPerfil(Perfil usuario);
+	public void criarPerfil(Perfil usuario) throws MyTwitterOperationException;
 	public void cancelarPerfil(String usuario);
 	public void tweetar(String usuario, String mensagem);
 	public Vector<Tweet> timeline(String usuario);

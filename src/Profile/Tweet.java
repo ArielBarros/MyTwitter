@@ -4,6 +4,11 @@ public class Tweet {
 	private String usuario;
 	private String mensagem;
 	
+	public Tweet(String usuario, String mensagem) {	
+		this.usuario = usuario;
+		this.mensagem = mensagem;
+	}
+	
 	public String getUsuario() {
 		return usuario;
 	}
