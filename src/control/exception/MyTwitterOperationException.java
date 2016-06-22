@@ -1,3 +1,4 @@
+package control.exception;
 
 public class MyTwitterOperationException extends Exception {
 	

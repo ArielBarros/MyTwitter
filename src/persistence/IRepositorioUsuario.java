@@ -1,6 +1,6 @@
-package Persistence;
-import Persistence.exception.PEException;
-import Profile.Perfil;
+package persistence;
+import persistence.exception.PEException;
+import profile.Perfil;
 
 
 public interface IRepositorioUsuario {

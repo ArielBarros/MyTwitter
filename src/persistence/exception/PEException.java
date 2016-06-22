@@ -1,4 +1,4 @@
-package Persistence.exception;
+package persistence.exception;
 
 public class PEException extends PersistenceException {
 

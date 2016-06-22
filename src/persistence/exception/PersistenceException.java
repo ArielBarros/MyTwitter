@@ -1,4 +1,4 @@
-package Persistence.exception;
+package persistence.exception;
 
 public class PersistenceException extends Exception{
 	
@@ -12,7 +12,7 @@ public class PersistenceException extends Exception{
 	}
 	
 	public PersistenceException(String message, String number) {
-		super("Existing Account!");
+		super("Persistence Exception!");
 		this.number = number;
 		this.message = message;
 	}

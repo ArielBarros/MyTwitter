@@ -1,4 +1,4 @@
-package Persistence;
+package persistence;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,21 +9,21 @@ import java.util.Vector;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import Persistence.exception.PEException;
-import Profile.Perfil;
+import persistence.exception.PEException;
+import profile.Perfil;
 
-public class UsuarioXstream implements IRepositorioUsuario {
+public class RepositorioUsuario implements IRepositorioUsuario {
 	
 	public static final String ACCOUNT_DB_XML_NAME = "AccountDB.xml";
 	private Vector<Perfil> perfis = null;
 	
-	public UsuarioXstream() {
+	public RepositorioUsuario() {
 		try {
-			loadData();
+			carregarDados();
 		} catch (FileNotFoundException fnfe) {
 			this.perfis = new Vector<Perfil>();
 			try {
-				saveData();
+				salvarDados();
 			} catch (IOException ioe) {
 				ioe.printStackTrace();
 			}
@@ -31,14 +31,14 @@ public class UsuarioXstream implements IRepositorioUsuario {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void loadData() throws FileNotFoundException {
+	private void carregarDados() throws FileNotFoundException {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("perfil", Perfil.class);
 		perfis = ((Vector<Perfil>) xstream.fromXML(new FileReader(ACCOUNT_DB_XML_NAME), Vector.class));
-		System.out.println(perfis.size());
+		System.out.println("Número de perfis cadastrados: "+perfis.size());
 	}
 
-	private void saveData() throws IOException {
+	private void salvarDados() throws IOException {
 		XStream xstream = new XStream();
 		xstream.alias("perfil", Perfil.class);
 		xstream.toXML(perfis, new FileWriter(ACCOUNT_DB_XML_NAME));
@@ -46,10 +46,24 @@ public class UsuarioXstream implements IRepositorioUsuario {
 
 	@Override
 	public void cadastrar(Perfil usuario) throws PEException{
+		/*
+		 *	try{
+		 *		this.buscar(usuario.getUsuario())
+		 *		throw new PEException("O Perfil já existe! ", usuario.getUsuario());
+		 *	} catch (PIException pie){
+		 *		this.perfis.addElement(usuario);
+		 *		try {
+		 *			salvarDados();
+		 *		} catch (IOException ioe) {
+		 *			throw new PEException("O Perfil não pode ser criado! " + ioe.getMessage(), usuario.getUsuario());
+		 *		}
+		 *	}
+		 */
+		
 		if (this.buscar(usuario.getUsuario()) == null) {
 			this.perfis.addElement(usuario);
 			try {
-				saveData();
+				salvarDados();
 			} catch (IOException ioe) {
 				throw new PEException("O Perfil não pode ser criado! " + ioe.getMessage(), usuario.getUsuario());
 			}
@@ -60,6 +74,26 @@ public class UsuarioXstream implements IRepositorioUsuario {
 
 	@Override
 	public Perfil buscar(String usuario) {
+		/*implemented using exceptions
+		 * if (this.perfis.size() > 0) {
+		 * 	for (int i = 0; i < this.perfis.size(); i++) {
+		 * 		Perfil perfil = (Perfil) this.perfis.elementAt(i);
+		 * 		if (perfil.getUsuario().equals(usuario)) {
+		 * 			if(perfil != null){
+		 * 				if(perfil.isAtivo()){
+		 * 					return perfil;
+		 * 				}else{
+		 * 					throw new PDException();
+		 * 				}
+		 *			}else{
+		 * 				throw new PIException();
+		 * 			}
+		 * 		}
+		 * 	}
+		 * }else{
+		 * }
+		*/
+		
 		if (this.perfis.size() > 0) {
 			for (int i = 0; i < this.perfis.size(); i++) {
 				Perfil perfil = (Perfil) this.perfis.elementAt(i);
