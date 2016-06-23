@@ -31,50 +31,46 @@ public class MyTwitter implements ITwitter{
 	}
 
 	@Override
-	public void cancelarPerfil(String usuario) throws PDException, PIException {
-		Perfil perfil = this.repositorio.buscar(usuario);
-		if (perfil != null) {
-			if (perfil.isAtivo()) {
-				perfil.setAtivo(false);
-			}else {
-				throw new PDException("Perfil Já está Desativado !", usuario);
-			}
-		} else {
-			throw new PIException("Perfil inexistente !", usuario);
+	public void cancelarPerfil(String usuario) throws MyTwitterOperationException {
+		try{
+			Perfil perfil = this.repositorio.buscar(usuario);
+			perfil.setAtivo(false);
+		}catch (PDException pde){
+			throw new MyTwitterOperationException(pde);
+		}catch (PIException pie) {
+			throw new MyTwitterOperationException(pie);
 		}
 	}
 
 	@Override
-	public void tweetar(String usuario, String mensagem) throws PIException, PDException, MFPException {
-		Perfil perfil = this.repositorio.buscar(usuario);
-		if (perfil != null) {
-			if (perfil.isAtivo()) {
-				if( (mensagem.length() > 0) && (mensagem.length() <= 140) ){
-					Tweet tweet = new Tweet(usuario, mensagem);
-					perfil.addTweet(tweet);
-					Vector<String> seguidores = perfil.getSeguidores();
-					for (int i = 0; i < perfil.getSeguidores().size(); i++) {
+	public void tweetar(String usuario, String mensagem) throws MyTwitterOperationException, MFPException {
+		try{
+			Perfil perfil = this.repositorio.buscar(usuario);
+			if( (mensagem.length() > 0) && (mensagem.length() <= 140) ){
+				Tweet tweet = new Tweet(usuario, mensagem);
+				perfil.addTweet(tweet);
+				Vector<String> seguidores = perfil.getSeguidores();
+				for (int i = 0; i < perfil.getSeguidores().size(); i++) {
+					try{
 						Perfil seguidor = this.repositorio.buscar(seguidores.elementAt(i));
-						if ( seguidor != null) {
-							if (seguidor.isAtivo()) {
-								seguidor.addTweet(tweet);
-							}
-						}
-					}
-				} else {
-					throw new MFPException("Mensagem fora do padrão !", usuario);
+						seguidor.addTweet(tweet);
+					}catch (PDException pde){} catch (PIException pie) {}
 				}
 			} else {
-				throw new PDException("Perfil Desativado !", usuario);
+				throw new MFPException("Mensagem fora do padrão !", usuario);
 			}
-		} else {
-			throw new PIException("Perfil inexistente !", usuario);
+		}catch (PDException pde){
+			throw new MyTwitterOperationException(pde);
+		}catch (PIException pie) {
+			throw new MyTwitterOperationException(pie);
 		}
 	}
 
 	@Override
 	public Vector<Tweet> timeline(String usuario) throws PIException, PDException {
+		
 		Perfil perfil = this.repositorio.buscar(usuario);
+		
 		if (perfil != null) {
 			if (perfil.isAtivo()) {
 				return perfil.getTimeline();

@@ -11,8 +11,8 @@ import profile.Tweet;
 
 public interface ITwitter {
 	public void criarPerfil(Perfil usuario) throws MyTwitterOperationException;
-	public void cancelarPerfil(String usuario) throws PDException, PIException;
-	public void tweetar(String usuario, String mensagem) throws PIException, PDException, MFPException;
+	public void cancelarPerfil(String usuario) throws MyTwitterOperationException;
+	public void tweetar(String usuario, String mensagem) throws MFPException, MyTwitterOperationException;
 	public Vector<Tweet> timeline(String usuario) throws PIException, PDException;
 	public Vector<Tweet> tweets(String usuario) throws PDException, PIException;
 	public void seguir(String seguidor, String seguido) throws PDException, PIException, SIException;
