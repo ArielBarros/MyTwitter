@@ -33,14 +33,14 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 	}
 	
 	@SuppressWarnings("unchecked")
-	private void carregarDados() throws FileNotFoundException {
+	public void carregarDados() throws FileNotFoundException {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("perfil", Perfil.class);
 		perfis = ((Vector<Perfil>) xstream.fromXML(new FileReader(ACCOUNT_DB_XML_NAME), Vector.class));
-		System.out.println("Número de perfis cadastrados: "+perfis.size());
+		System.out.println(perfis.size());
 	}
 
-	private void salvarDados() throws IOException {
+	public void salvarDados() throws IOException {
 		XStream xstream = new XStream();
 		xstream.alias("perfil", Perfil.class);
 		xstream.toXML(perfis, new FileWriter(ACCOUNT_DB_XML_NAME));
@@ -100,9 +100,5 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 	public void atualizar(Perfil usuario) {
 		// TODO Auto-generated method stub
 	}
-
-	@Override
-	public int numeroDePerfis() {
-		return this.perfis.size();
-	}
+	
 }
