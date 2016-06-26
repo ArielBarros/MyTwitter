@@ -1,5 +1,6 @@
-package persistence.exception;
-public class PDException extends PersistenceException {
+package profile.exception;
+
+public class PDException extends ProfileException {
 
 	private static final long serialVersionUID = 1L;
 

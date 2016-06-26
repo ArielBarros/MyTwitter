@@ -3,10 +3,9 @@ import java.util.Vector;
 
 import control.exception.MyTwitterOperationException;
 import persistence.exception.MFPException;
-import persistence.exception.SIException;
-
 import profile.Perfil;
 import profile.Tweet;
+import profile.exception.SIException;
 
 public interface ITwitter {
 	public void criarPerfil(Perfil usuario) throws MyTwitterOperationException;

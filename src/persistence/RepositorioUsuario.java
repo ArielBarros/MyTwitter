@@ -9,10 +9,10 @@ import java.util.Vector;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
-import persistence.exception.PDException;
-import persistence.exception.PEException;
-import persistence.exception.PIException;
 import profile.Perfil;
+import profile.exception.PDException;
+import profile.exception.PEException;
+import profile.exception.PIException;
 
 public class RepositorioUsuario implements IRepositorioUsuario {
 	

@@ -5,12 +5,12 @@ import java.util.Vector;
 import control.exception.MyTwitterOperationException;
 import persistence.IRepositorioUsuario;
 import persistence.exception.MFPException;
-import persistence.exception.PDException;
-import persistence.exception.PEException;
-import persistence.exception.PIException;
-import persistence.exception.SIException;
 import profile.Perfil;
 import profile.Tweet;
+import profile.exception.PDException;
+import profile.exception.PEException;
+import profile.exception.PIException;
+import profile.exception.SIException;
 
 public class MyTwitter implements ITwitter{
 	

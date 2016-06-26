@@ -1,6 +1,6 @@
-package persistence.exception;
+package profile.exception;
 
-public class PIException extends PersistenceException {
+public class PIException extends ProfileException {
 	
 	private static final long serialVersionUID = 1L;
 
