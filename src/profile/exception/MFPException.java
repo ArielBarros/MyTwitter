@@ -1,4 +1,6 @@
-package persistence.exception;
+package profile.exception;
+
+import persistence.exception.PersistenceException;
 
 public class MFPException extends PersistenceException {
 	

@@ -9,8 +9,8 @@ import org.junit.Test;
 
 import persistence.RepositorioUsuario;
 import profile.PessoaFisica;
+import profile.exception.PEException;
 import control.MyTwitter;
-import control.exception.MyTwitterOperationException;
 
 public class MyTwitterTest {
 	
@@ -26,47 +26,24 @@ public class MyTwitterTest {
 	@Test
 	public void criarPerfiltest() {
 		try {
-			my.criarPerfil(new PessoaFisica("José"));
-			System.out.println("Passou: criarPerfiltest");
-		} catch (MyTwitterOperationException e) {
-			System.out.println("Não Passou: criarPerfiltest");
+			my.criarPerfil(new PessoaFisica("Ana"));
+		} catch (PEException pee) {
+			pee.getMessage();
 		}
 	}
 	
 	@Test
 	public void cancelarPerfiltest() {
-		criarPerfiltest();
-		try {
-			my.cancelarPerfil("José");
-			System.out.println("Passou: cancelarPerfiltest");
-		} catch (MyTwitterOperationException e) {
-			System.out.println("Não Passou: cancelarPerfiltest");
-			//System.out.println(e.getMessage());
-		}
+
 	}
 	
 	@Test
 	public void criarPerfilUsuarioExistentetest() {
-		criarPerfiltest();
-		try {
-			my.criarPerfil(new PessoaFisica("José"));
-			System.out.println("Não Passou: criarPerfilUsuarioExistentetest");
-		} catch (MyTwitterOperationException e) {
-			System.out.println("Passou: criarPerfilUsuarioExistentetest");
-			//System.out.println(e.getMessage());
-		}
+
 	}
 	
 	@Test
 	public void criarPerfilUsuarioDesativadotest() {
-		criarPerfiltest();	
-		cancelarPerfiltest();
-		try {
-			my.criarPerfil(new PessoaFisica("José"));
-			System.out.println("Não Passou: criarPerfilUsuarioDesativadotest");
-		} catch (MyTwitterOperationException e) {
-			System.out.println("Passou: criarPerfilUsuarioDesativadotest");
-			//System.out.println(e.getMessage());
-		}
+
 	}
 }
