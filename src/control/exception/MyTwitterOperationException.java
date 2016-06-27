@@ -16,7 +16,7 @@ public class MyTwitterOperationException extends Exception {
 	}
 
 	public String getMessage() {
-		String text = "Transaction not perfermed!\nCause: ";
+		String text = "Operação não realizada com sucesso!\nCause: ";
 		if (cause != null) {
 			text += cause.getMessage();
 		} else {
