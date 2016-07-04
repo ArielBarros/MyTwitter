@@ -10,6 +10,7 @@ import profile.exception.MFPException;
 import profile.exception.PDException;
 import profile.exception.PEException;
 import profile.exception.PIException;
+import profile.exception.PJSException;
 import profile.exception.SIException;
 
 public class MyTwitter implements ITwitter{
@@ -118,20 +119,27 @@ public class MyTwitter implements ITwitter{
 	}
 	
 	@Override
-	public void seguir(String seguidor, String seguido) throws PDException, PIException, SIException {
-		//falta implementar se o seguidor ja segue o perfil seguido
-		if(this.repositorio.buscar(seguidor) != null){
+	public void seguir(String seguidor, String seguido) throws PDException, PIException, SIException, PJSException {
+		Perfil perfilSeguidor = this.repositorio.buscar(seguidor);
+		Perfil perfilSeguido = this.repositorio.buscar(seguido);
+		
+		if(perfilSeguidor == null){
 			throw new PIException("Perfil seguidor inexistente !", seguidor);
-		}else if(this.repositorio.buscar(seguido) != null){
+		}else if(perfilSeguido == null){
 			throw new PIException("Perfil seguido inexistente !", seguido);
-		}else if(this.repositorio.buscar(seguidor).isAtivo()){
+		}else if(!perfilSeguidor.isAtivo()){
 			throw new PDException("Perfil seguidor Desativado !", seguidor);
-		}else if(this.repositorio.buscar(seguido).isAtivo()){
+		}else if(!perfilSeguido.isAtivo()){
 			throw new PDException("Perfil seguido Desativado !", seguido);
-		}else if(this.repositorio.buscar(seguidor).getUsuario().equals(seguido)){
+		}else if(perfilSeguidor.getUsuario().equals(perfilSeguido.getUsuario())){
 			throw new SIException("Perfil seguidor inválido !", seguidor);
 		}else{
-			this.repositorio.buscar(seguido).addSeguidor(seguidor);
+			for (String s : perfilSeguido.getSeguidores()) {
+				if (perfilSeguidor.getUsuario().equals(s)) {
+					throw new PJSException("Perfil já segue o perfil. ", seguido);
+				}
+			}
+			perfilSeguido.addSeguidor(seguidor);
 			atualizarDados();
 		}
 	}

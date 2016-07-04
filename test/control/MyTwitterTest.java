@@ -9,7 +9,9 @@ import org.junit.Test;
 
 import persistence.RepositorioUsuario;
 import profile.PessoaFisica;
+import profile.exception.PDException;
 import profile.exception.PEException;
+import profile.exception.PIException;
 import control.MyTwitter;
 
 public class MyTwitterTest {
@@ -19,7 +21,9 @@ public class MyTwitterTest {
 	@Before
 	public void MyTwitterInittest() {
 		File f = new File("AccountDB.xml");
-		f.delete();
+		if(f.exists())
+			f.delete();
+		
 		my = new MyTwitter(new RepositorioUsuario());
 	}
 	
@@ -34,7 +38,16 @@ public class MyTwitterTest {
 	
 	@Test
 	public void cancelarPerfiltest() {
-
+		criarPerfiltest();
+		try {
+			my.cancelarPerfil("Ana");
+		} catch (PDException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (PIException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	@Test
