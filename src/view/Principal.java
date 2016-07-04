@@ -1,8 +1,6 @@
 package view;
 
-import java.io.File;
-
-import control.MyTwitter;
+import java.util.Scanner;
 
 import persistence.RepositorioUsuario;
 import profile.Perfil;
@@ -14,138 +12,140 @@ import profile.exception.PEException;
 import profile.exception.PIException;
 import profile.exception.PJSException;
 import profile.exception.SIException;
-
+import control.MyTwitter;
 
 public class Principal {
-
+	
+	private static Scanner scanner = new Scanner(System.in);
+	
 	public static void main(String[] args) {
-		/*
-		 * Criar perfil passou
-		 * cancelarperfil passou
-		 * seguir passou
-		 * seguidores passou
-		 * numeroDeSeguidores passou
-		 * twettar passou
-		 * timeline passou
-		 * tweets passou
-		 */
-		
-		/*
-		
-		*/
-		File f = new File("AccountDB.xml");
-		if(f.delete())
-			System.out.println("Arquivo Do repositorio Deletado.");
 		MyTwitter my = new MyTwitter(new RepositorioUsuario());
-		
-		try {
-			my.criarPerfil(new PessoaFisica("Ana"));
-		} catch (PEException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.criarPerfil(new PessoaFisica("JJ"));
-		} catch (PEException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.criarPerfil(new PessoaFisica("João"));
-		} catch (PEException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.seguir("Ana", "JJ");
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		} catch (SIException e) {
-			System.out.println(e.getMessage());
-		}catch (PJSException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.seguir("João", "JJ");
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		} catch (SIException e) {
-			System.out.println(e.getMessage());
-		}catch (PJSException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			for (Perfil seguidor : my.seguidores("JJ")) {
-				System.out.println(seguidor.getUsuario());
+		boolean loop = true;
+		while (loop) {
+			switch (menu()) {
+			case 1:
+				try {
+					System.out.println("Digite o nome do Perfil a ser cadastrado: ");
+					my.criarPerfil(new PessoaFisica(scanner.next()));
+				} catch (PEException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 2:
+				try {
+					System.out.println("Digite o nome do Perfil a ser cancelado: ");
+					my.cancelarPerfil(scanner.next());
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 3:
+				try {
+					System.out.println("Digite o nome do Perfil que vai publicar o tweet: ");
+					String usuario = scanner.next();
+					System.out.println("Digite a mensagem do tweet: ");
+					String mensagem = scanner.next();
+					my.tweetar(usuario, mensagem);
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (MFPException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 4:
+				try {
+					System.out.println("Digite o nome do Perfil Seguidor: ");
+					String seguidor = scanner.next();
+					System.out.println("Digite o nome do Perfil à ser seguido: ");
+					String seguido = scanner.next();
+					my.seguir(seguidor, seguido);
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				} catch (SIException e) {
+					System.out.println(e.getMessage());
+				}catch (PJSException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 5:
+				try {			
+					System.out.println("Digite o nome do Perfil para resgatar a timeline: ");
+					for (Tweet tweet : my.timeline(scanner.next())) {
+						System.out.print(tweet.getUsuario()+": ");
+						System.out.println(tweet.getMensagem());
+					}
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 6:
+				try {
+					System.out.println("Digite o nome do Perfil para resgatar os Tweets: ");
+					for (Tweet tweet : my.tweets(scanner.next())) {
+						System.out.print(tweet.getUsuario()+": ");
+						System.out.println(tweet.getMensagem());
+					}
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 7:
+				try {
+					System.out.println("Digite o nome do Perfil para resgatar os Seguidores: ");
+					for (Perfil seguidor : my.seguidores(scanner.next())) {
+						System.out.println(seguidor.getUsuario());
+					}
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 8:
+				try {
+					System.out.println("Digite o nome do Perfil para resgatar o número total de seguidores: ");
+					System.out.println(my.numeroSeguidores(scanner.next()));
+				} catch (PDException e) {
+					System.out.println(e.getMessage());
+				} catch (PIException e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 9:
+				System.out.print("Tchau, volte sempre !!!");
+				loop = false;
+				break;
+			default:
+				break;
 			}
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
 		}
-		
-		try {
-			System.out.println(my.numeroSeguidores("JJ"));
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.cancelarPerfil("Ana");
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.tweetar("JJ", "Minha primeira publicação");
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (MFPException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			my.tweetar("João", "Olá, eu sou o João");
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (MFPException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {			
-			for (Tweet tweet : my.timeline("João")) {
-				System.out.print(tweet.getUsuario()+": ");
-				System.out.println(tweet.getMensagem());
-			}
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		try {
-			for (Tweet tweet : my.tweets("João")) {
-				System.out.print(tweet.getUsuario()+": ");
-				System.out.println(tweet.getMensagem());
-			}
-		} catch (PDException e) {
-			System.out.println(e.getMessage());
-		} catch (PIException e) {
-			System.out.println(e.getMessage());
-		}
+	}
+
+	private static int menu() {
+		System.out.println("--------------------------------");
+		System.out.println("-----------MyTwitter------------");
+		System.out.println("--------------------------------");
+		System.out.println(" [1] Criar Perfil");
+		System.out.println(" [2] Cancelar Perfil");
+		System.out.println(" [3] Twettar");
+		System.out.println(" [4] Seguir");
+		System.out.println(" [5] Resgatar Timeline");
+		System.out.println(" [6] Resgatar Tweets");
+		System.out.println(" [7] Resgatar Seguidores");
+		System.out.println(" [8] Numero de Seguidores");
+		System.out.println(" [9] Sair");
+		System.out.println("================================");
+		System.out.println("Entre com a opção: ");
+		return scanner.nextInt();
 	}
 }
