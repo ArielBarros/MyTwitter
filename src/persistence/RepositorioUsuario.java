@@ -10,7 +10,10 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 
 import persistence.exception.UJCException;
+import persistence.exception.UNCException;
 import profile.Perfil;
+import profile.PessoaFisica;
+import profile.PessoaJuridica;
 
 public class RepositorioUsuario implements IRepositorioUsuario {
 	
@@ -35,7 +38,7 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("perfil", Perfil.class);
 		perfis = ((Vector<Perfil>) xstream.fromXML(new FileReader(ACCOUNT_DB_XML_NAME), Vector.class));
-		System.out.println(perfis.size());
+		System.out.println("Número de Perfis cadastrados: "+perfis.size());
 	}
 
 	public void salvarDados() throws IOException {
@@ -73,8 +76,21 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 	}
 
 	@Override
-	public void atualizar(Perfil usuario) {
-		//Perfil perfil = this.buscar(usuario.getUsuario());
+	public void atualizar(Perfil usuario) throws UNCException {		
+		Perfil perfil = this.buscar(usuario.getUsuario());
+		if(perfil != null){
+			if (perfil instanceof PessoaFisica) {
+				if(usuario instanceof PessoaFisica){
+					perfil = usuario;	
+				}
+			}else if(perfil instanceof PessoaJuridica){
+				if(usuario instanceof PessoaJuridica){
+					perfil = usuario;
+				}
+			}
+		}else{
+			throw new UNCException("Usuario não cadastrado", usuario.getUsuario());
+		}
 	}
 	
 }

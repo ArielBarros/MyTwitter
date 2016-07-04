@@ -18,7 +18,7 @@ public class ProfileException extends Exception {
 	}
 
 	public String getMessage() {
-		return this.message + " [Profile: = " + profile + "]";
+		return this.message + " [Profile = " + profile + "]";
 	}
 
 	public String getProfile() {

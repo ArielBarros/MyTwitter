@@ -1,7 +1,9 @@
 package view;
 
+import java.io.IOException;
 import java.util.Scanner;
 
+import persistence.IRepositorioUsuario;
 import persistence.RepositorioUsuario;
 import profile.Perfil;
 import profile.PessoaFisica;
@@ -20,7 +22,8 @@ public class Principal {
 	private static Scanner scanner = new Scanner(System.in);
 	
 	public static void main(String[] args) {
-		MyTwitter my = new MyTwitter(new RepositorioUsuario());
+		IRepositorioUsuario repositorio = new RepositorioUsuario();
+		MyTwitter my = new MyTwitter(repositorio);
 		boolean loop = true;
 		while (loop) {
 			switch (menu()) {
@@ -37,6 +40,11 @@ public class Principal {
 							my.criarPerfil(perfil);
 							System.out.println("Digite o CPF da pessoa física: ");
 							((PessoaFisica) perfil).setCpf(scanner.nextLong());
+							try {
+								repositorio.salvarDados();
+							} catch (IOException e) {
+								System.out.println(e.getMessage());
+							}
 							System.out.println("Cadastro realizado com sucesso !");
 						} catch (PEException e) {
 							System.out.println(e.getMessage());
@@ -49,6 +57,11 @@ public class Principal {
 							my.criarPerfil(perfil);
 							System.out.println("Digite o CNPJ da pessoa jurídica: ");
 							((PessoaJuridica) perfil).setCnpj(scanner.nextLong());
+							try {
+								repositorio.salvarDados();
+							} catch (IOException e) {
+								System.out.println(e.getMessage());
+							}
 							System.out.println("Cadastro realizado com sucesso !");
 						} catch (PEException e) {
 							System.out.println(e.getMessage());
@@ -56,7 +69,7 @@ public class Principal {
 						break;
 	
 					default:
-						System.out.println("Escolha inválida");
+						System.out.println("Opção inválida");
 						break;
 				}
 				break;
@@ -76,7 +89,7 @@ public class Principal {
 					System.out.println("Digite o nome do Perfil que vai publicar o tweet: ");
 					String usuario = scanner.next();
 					System.out.println("Digite a mensagem do tweet: ");
-					String mensagem = scanner.next();
+					String mensagem = scanner.next() + scanner.nextLine();
 					my.tweetar(usuario, mensagem);
 					System.out.println("Tweet publicado com sucesso !");
 				} catch (PIException e) {
