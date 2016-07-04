@@ -5,6 +5,7 @@ import java.util.Scanner;
 import persistence.RepositorioUsuario;
 import profile.Perfil;
 import profile.PessoaFisica;
+import profile.PessoaJuridica;
 import profile.Tweet;
 import profile.exception.MFPException;
 import profile.exception.PDException;
@@ -24,17 +25,46 @@ public class Principal {
 		while (loop) {
 			switch (menu()) {
 			case 1:
-				try {
-					System.out.println("Digite o nome do Perfil a ser cadastrado: ");
-					my.criarPerfil(new PessoaFisica(scanner.next()));
-				} catch (PEException e) {
-					System.out.println(e.getMessage());
+				int key = 0;
+				System.out.println(" [1] Cadastrar Pessoa Física");
+				System.out.println(" [2] Cadastrar Pessoa Jurídica");
+				key = scanner.nextInt();
+				switch (key) {
+					case 1:
+						try {
+							System.out.println("Digite o nome do Perfil a ser cadastrado: ");
+							Perfil perfil = new PessoaFisica(scanner.next());
+							my.criarPerfil(perfil);
+							System.out.println("Digite o CPF da pessoa física: ");
+							((PessoaFisica) perfil).setCpf(scanner.nextLong());
+							System.out.println("Cadastro realizado com sucesso !");
+						} catch (PEException e) {
+							System.out.println(e.getMessage());
+						}
+						break;
+					case 2:
+						try {
+							System.out.println("Digite o nome do Perfil a ser cadastrado: ");
+							Perfil perfil = new PessoaJuridica(scanner.next());
+							my.criarPerfil(perfil);
+							System.out.println("Digite o CNPJ da pessoa jurídica: ");
+							((PessoaJuridica) perfil).setCnpj(scanner.nextLong());
+							System.out.println("Cadastro realizado com sucesso !");
+						} catch (PEException e) {
+							System.out.println(e.getMessage());
+						}
+						break;
+	
+					default:
+						System.out.println("Escolha inválida");
+						break;
 				}
 				break;
 			case 2:
 				try {
 					System.out.println("Digite o nome do Perfil a ser cancelado: ");
 					my.cancelarPerfil(scanner.next());
+					System.out.println("Perfil cancelado com sucesso !");
 				} catch (PDException e) {
 					System.out.println(e.getMessage());
 				} catch (PIException e) {
@@ -48,6 +78,7 @@ public class Principal {
 					System.out.println("Digite a mensagem do tweet: ");
 					String mensagem = scanner.next();
 					my.tweetar(usuario, mensagem);
+					System.out.println("Tweet publicado com sucesso !");
 				} catch (PIException e) {
 					System.out.println(e.getMessage());
 				} catch (PDException e) {
@@ -63,6 +94,7 @@ public class Principal {
 					System.out.println("Digite o nome do Perfil à ser seguido: ");
 					String seguido = scanner.next();
 					my.seguir(seguidor, seguido);
+					System.out.println("Seguido com sucesso !");
 				} catch (PDException e) {
 					System.out.println(e.getMessage());
 				} catch (PIException e) {
@@ -144,7 +176,7 @@ public class Principal {
 		System.out.println(" [7] Resgatar Seguidores");
 		System.out.println(" [8] Numero de Seguidores");
 		System.out.println(" [9] Sair");
-		System.out.println("================================");
+		System.out.println("--------------------------------");
 		System.out.println("Entre com a opção: ");
 		return scanner.nextInt();
 	}

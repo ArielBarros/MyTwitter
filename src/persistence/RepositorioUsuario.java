@@ -74,7 +74,7 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 
 	@Override
 	public void atualizar(Perfil usuario) {
-		// TODO Auto-generated method stub
+		//Perfil perfil = this.buscar(usuario.getUsuario());
 	}
 	
 }
