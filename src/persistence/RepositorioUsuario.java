@@ -17,7 +17,7 @@ import profile.PessoaJuridica;
 
 public class RepositorioUsuario implements IRepositorioUsuario {
 	
-	public static final String ACCOUNT_DB_XML_NAME = "AccountDB.xml";
+	public static final String PERFIS_DB_XML_NAME = "Repositorio.xml";
 	private Vector<Perfil> perfis = null;
 	
 	public RepositorioUsuario() {
@@ -37,14 +37,14 @@ public class RepositorioUsuario implements IRepositorioUsuario {
 	public void carregarDados() throws FileNotFoundException {
 		XStream xstream = new XStream(new DomDriver());
 		xstream.alias("perfil", Perfil.class);
-		perfis = ((Vector<Perfil>) xstream.fromXML(new FileReader(ACCOUNT_DB_XML_NAME), Vector.class));
+		perfis = ((Vector<Perfil>) xstream.fromXML(new FileReader(PERFIS_DB_XML_NAME), Vector.class));
 		System.out.println("Número de Perfis cadastrados: "+perfis.size());
 	}
 
 	public void salvarDados() throws IOException {
 		XStream xstream = new XStream();
 		xstream.alias("perfil", Perfil.class);
-		xstream.toXML(perfis, new FileWriter(ACCOUNT_DB_XML_NAME));
+		xstream.toXML(perfis, new FileWriter(PERFIS_DB_XML_NAME));
 	}
 
 	@Override
